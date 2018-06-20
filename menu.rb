@@ -14,8 +14,8 @@ end
 
 def menu
   puts 'Ingrese 1 para generar archivos con los promedios de cada alumno'
-  puts 'Ingrese 2'
-  puts 'Ingrese 3'
+  puts 'Ingrese 2 para conocer las inasistencias'
+  puts 'Ingrese 3 para saber quienes aprobaron (promedio mayor a 5)'
   puts 'Ingrese 4 para salir'
 end
 
@@ -81,12 +81,12 @@ loop do |option|
   option = gets.chomp
   case option.to_i
   when 1
-    promedios(archivoNotas)
+    promedios(archivo_notas)
   when 2
-    inasistencias(archivoNotas)
+    inasistencias(archivo_notas)
   when 3
     if File.file?('Promedios.csv')
-      aprobados(archivoPromedios, 5)
+      aprobados(archivo_promedios, 5)
     else
       puts 'Debe calcular el promedio primero seleccionando la opcion 1'
     end
