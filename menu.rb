@@ -1,25 +1,25 @@
-def archivo_notas
+def file_grades
   file = File.open('notas.csv', 'r')
-  archivos = file.readlines
+  content = file.readlines
   file.close
-  archivos
+  content
 end
 
-def archivo_promedios
+def file_average
   file = File.open('Promedios.csv', 'r')
-  archivos = file.readlines
+  content = file.readlines
   file.close
-  archivos
+  content
 end
 
 def menu
   puts 'Ingrese 1 para generar archivos con los promedios de cada alumno'
   puts 'Ingrese 2 para conocer las inasistencias'
-  puts 'Ingrese 3 para saber quienes aprobaron (promedio mayor a 5)'
+  puts 'Ingrese 3 para saber quienes aprobaron'
   puts 'Ingrese 4 para salir'
 end
 
-def promedios(archi)
+def average(archi)
   lines = archi.map(&:chomp)
   fil = File.open('Promedios.csv', 'w')
   lines.each do |value|
@@ -34,24 +34,24 @@ def promedios(archi)
   puts 'Archivos generados correctamente'
 end
 
-def inasistencias(archi)
+def inasistants(archi)
   puts 'Las inasistencias por alumno son:'
   lines = archi.map(&:chomp)
-  suma = 0
+  sum = 0
   lines.each do |value|
     inasistant = value.split(',')
-    suma += inasistant.count('A')
+    sum += inasistant.count('A')
     puts "#{inasistant[0]}:#{inasistant.count('A')}"
   end
-  puts "Con un total de: #{suma}"
+  puts "Con un total de: #{sum}"
 end
 
-def aprobados(archi, min = 5)
+def aproved(archi, min = 5)
   lines = archi.map(&:chomp)
   puts 'Los alumnos aprobados son:'
   lines.each do |valor|
-    promedios = valor.split(': ')
-    puts "#{promedios[0]} con promedio: #{promedios[1]}" if promedios[1].to_f >= min
+    averages = valor.split(': ')
+    puts "#{averages[0]} con promedio: #{averages[1]}" if averages[1].to_f >= min
   end
 end
 
@@ -61,18 +61,18 @@ loop do |option|
   case option.to_i
   when 1
     if File.file?('notas.csv')
-      promedios(archivo_notas)
+      average(file_grades)
     else
       puts "el archivo 'notas.csv' no esta en el directorio del proyecto"
     end
   when 2
-    inasistencias(archivo_notas)
+    inasistants(file_grades)
   when 3
     if File.file?('Promedios.csv')
       puts 'favor ingrese la nota minima para aprobar'
-      minimo = gets.chomp
-      if minimo.to_i > 0 && minimo.to_i <= 10
-        aprobados(archivo_promedios, minimo.to_i)
+      mini = gets.chomp
+      if mini.to_i > 0 && mini.to_i <= 10
+        aproved(file_average, mini.to_i)
       else
         puts 'La nota minima debe estar entre 1 y 10 para determinar los aprobados'
       end
