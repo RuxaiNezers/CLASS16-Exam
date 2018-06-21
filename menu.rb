@@ -19,37 +19,16 @@ def menu
   puts 'Ingrese 4 para salir'
 end
 
-#Consultar si el archivo debe tener el nombre de los alumnos y dentro el promedio de cada uno
-=begin
 def promedios(archi)
   lines = archi.map(&:chomp)
+  fil = File.open('Promedios.csv', 'w')
   lines.each do |value|
     student = value.split(',')
     sum = 0
-    for i in 1..5 do
-      sum += student[i].to_i if student[i].to_i.is_a? Integer
+    student.each do |i|
+      sum += i.to_i if i.to_i.is_a? Integer
     end
-    fil = File.open("#{student[0]}.csv", 'w')
-    fil.puts "Promedio: #{sum.to_f / (student.length - 1)}"
-    fil.close
-  end
-  puts 'Archivos generados correctamente'
-end
-=end
-
-#o generar un archillo llamado promedios con los resultados de cada uno dentro
-
-def promedios(archi)
-  lines = archi.map(&:chomp)
-  fil = File.open("Promedios.csv", 'w')
-  lines.each do |value|
-    student = value.split(',')
-    sum = 0
-    for i in 1..5 do
-      sum += student[i].to_i if student[i].to_i.is_a? Integer
-    end
-    fil.puts "#{student[0]}: #{sum.to_f / (student.length - 1)}"
-    
+    fil.puts "#{student[0]}: #{sum.to_f/(student.length - 1)}"   
   end
   fil.close
   puts 'Archivos generados correctamente'
@@ -71,7 +50,7 @@ def aprobados(archi, min)
   lines = archi.map(&:chomp)
   puts 'Los alumnos aprobados son:'
   lines.each do |valor|
-    promedios = valor.split(' ')
+    promedios = valor.split(': ')
     puts "#{promedios[0]} con promedio: #{promedios[1]}" if promedios[1].to_f >= min
   end
 end
@@ -81,7 +60,11 @@ loop do |option|
   option = gets.chomp
   case option.to_i
   when 1
-    promedios(archivo_notas)
+    if File.file?('notas.csv')
+      promedios(archivo_notas)
+    else
+      puts "el archivo 'notas.csv' no esta en el directorio del proyecto"
+    end
   when 2
     inasistencias(archivo_notas)
   when 3
