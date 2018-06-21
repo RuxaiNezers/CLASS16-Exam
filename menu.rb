@@ -46,7 +46,7 @@ def inasistencias(archi)
   puts "Con un total de: #{suma}"
 end
 
-def aprobados(archi, min)
+def aprobados(archi, min = 5)
   lines = archi.map(&:chomp)
   puts 'Los alumnos aprobados son:'
   lines.each do |valor|
@@ -69,7 +69,13 @@ loop do |option|
     inasistencias(archivo_notas)
   when 3
     if File.file?('Promedios.csv')
-      aprobados(archivo_promedios, 5)
+      puts 'favor ingrese la nota minima para aprobar'
+      minimo = gets.chomp
+      if minimo.to_i > 0 && minimo.to_i <= 10
+        aprobados(archivo_promedios, minimo.to_i)
+      else
+        puts 'La nota minima debe estar entre 1 y 10 para determinar los aprobados'
+      end
     else
       puts 'Debe calcular el promedio primero seleccionando la opcion 1'
     end
